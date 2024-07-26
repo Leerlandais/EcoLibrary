@@ -6,10 +6,12 @@ namespace model\Manager;
 use model\Mapping\UserMapping;
 use model\MyPDO;
 
+use PDO;
 use PDOException;
-
+use model\Trait\TraitLaundryRoom;
 
 class UserManager {
+    use TraitLaundryRoom;
     private MyPDO $db;
 
     public function __construct(MyPDO $db) {
@@ -27,7 +29,10 @@ class UserManager {
     }
 
     public function register(string $login, string $password, string $name, string $email) : bool {
+        $login    = $this->standardClean($login);
         $password = password_hash($password, PASSWORD_DEFAULT);
+        $name     = $this->standardClean($name);
+        $email    = $this->emailClean($email);
 
         $stmt = $this->db->prepare("INSERT INTO `eco_object_users`
                                                     (`object_user_login`,
@@ -37,6 +42,24 @@ class UserManager {
                                         VALUES (?,?,?,?)");
         $stmt->execute([$login,$password,$name,$email]);
         if ($stmt->rowCount() > 0) return true;
+        return false;
+    }
+
+    public function login(string $login, string $password) : bool  {
+        $login = $this->standardClean($login);
+        // $password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("SELECT * FROM `eco_object_users` WHERE `object_user_login` = :login");
+        $stmt->execute([':login' => $login]);
+        if ($stmt->rowCount() > 0) {
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (password_verify($password, $user['object_user_pass'])) {
+                $_SESSION = $user;
+                unset($_SESSION['object_user_pass']);
+                $_SESSION["id"] = session_id();
+                return true;
+            }
+        }
+        $_SESSION["errorMessage"] = "error while logging in";
         return false;
     }
 

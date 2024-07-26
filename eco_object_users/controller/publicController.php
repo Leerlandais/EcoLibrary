@@ -29,6 +29,8 @@ if(isset($_POST["createUserName"],
         $_SESSION["errorMessage"] = "Error creating user!";
         header("location: /");
         die();
+    }else {
+        $userManager->login($name, $password);
     }
 }
 
