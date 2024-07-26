@@ -10,7 +10,26 @@ if(isset($_POST["createUserName"],
          $_POST["createUserLogin"],
          $_POST["createUserPassword"],
          $_POST["createUserPassVerify"])) {
+    if ($_POST["createUserPassword"] !== $_POST["createUserPassVerify"]) {
+        $_SESSION["errorMessage"] = "Passwords do not match!";
+        header("location: /");
+        die();
+    }else if ($userManager->testUserName($_POST["createUserLogin"]) === true) {
+        $_SESSION["errorMessage"] = "Login already exists!";
+        header("location: /");
+        die();
+    }
+    $name = $_POST["createUserName"];
+    $email = $_POST["createUserEmail"];
+    $login = $_POST["createUserLogin"];
+    $password = $_POST["createUserPassword"];
 
+    $createUser = $userManager->register($login, $password, $name, $email);
+    if (!$createUser) {
+        $_SESSION["errorMessage"] = "Error creating user!";
+        header("location: /");
+        die();
+    }
 }
 
 

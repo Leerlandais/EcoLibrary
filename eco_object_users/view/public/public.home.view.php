@@ -16,7 +16,9 @@
 <div class="container-fluid w-screen h-screen bg-blue-400">
     <div class="py-12">
         <?php if(isset($errorMessage)) {
-            echo $errorMessage;
+        ?>
+            <h2 class="text-4xl text-red-600 text-center"><?=$errorMessage?></h2>
+        <?php
         }
         ?>
     </div>
