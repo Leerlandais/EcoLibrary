@@ -1,5 +1,6 @@
 <?php
 
+use model\Manager\UserManager;
 use model\Mapping\UserMapping;
 $route = $_GET['route'] ?? 'home';
 /*
@@ -13,9 +14,14 @@ var_dump($route);
  * case : etc
  */
 
+$userManager = new UserManager($db);
+
 $id = 25;
 $login = "leerlandais";
 $pass = "passTest";
+
+$pass = $userManager->hashPassword($pass);
+
 $name = "Lee Brennan";
 $mail = "lee@leerlandais.com";
 $permission = 1;

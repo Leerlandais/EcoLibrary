@@ -6,7 +6,7 @@ use model\Abstract\AbstractMapping;
 
 interface InterfaceUserManager
 {
-    public function register(string $login, string $email, string $password);
+    public function register(string $login, string $email, string $password, string $username);
 
     public function login(string $login, string $password);
 
