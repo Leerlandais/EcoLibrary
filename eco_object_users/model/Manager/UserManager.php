@@ -30,7 +30,7 @@ class UserManager {
 
     public function register(string $login, string $password, string $name, string $email) : bool {
         $login    = $this->standardClean($login);
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $password = $this->hashPassword($password, PASSWORD_DEFAULT);
         $name     = $this->standardClean($name);
         $email    = $this->emailClean($email);
 
@@ -47,11 +47,12 @@ class UserManager {
 
     public function login(string $login, string $password) : bool  {
         $login = $this->standardClean($login);
-        // $password = password_hash($password, PASSWORD_DEFAULT);
+        // $password = password_hash($password, PASSWORD_DEFAULT); // I ALWAYS FORGET THAT IT IS NOT NECESSARY TO PRE-HASH THE PASSWORD
         $stmt = $this->db->prepare("SELECT * FROM `eco_object_users` WHERE `object_user_login` = :login");
         $stmt->execute([':login' => $login]);
         if ($stmt->rowCount() > 0) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            // the password is hashed for testing as part of password_verify()
             if (password_verify($password, $user['object_user_pass'])) {
                 $_SESSION = $user;
                 unset($_SESSION['object_user_pass']);
@@ -63,7 +64,22 @@ class UserManager {
         return false;
     }
 
-    public function hashPassword(string $password): string {
+    public function logout() : bool {
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
+
+        header("Location: ./");
+        exit();
+    }
+
+    private function hashPassword(string $password): string {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 } // end class

@@ -5,25 +5,34 @@ use model\Mapping\UserMapping;
 
 $userManager = new UserManager($db);
 
+// LOGOUT
+if (isset($_GET["logout"])) {
+    $userManager->logout();
+}
+
+// CREATE NEW USER
 if(isset($_POST["createUserName"],
          $_POST["createUserEmail"],
          $_POST["createUserLogin"],
          $_POST["createUserPassword"],
          $_POST["createUserPassVerify"])) {
+    // first test if the two passwords inputted match
     if ($_POST["createUserPassword"] !== $_POST["createUserPassVerify"]) {
         $_SESSION["errorMessage"] = "Passwords do not match!";
         header("location: /");
         die();
+        // then check if the username already exists
     }else if ($userManager->testUserName($_POST["createUserLogin"]) === true) {
         $_SESSION["errorMessage"] = "Login already exists!";
         header("location: /");
         die();
     }
+    // collect necessary info (cleaning done inside the function)
     $name = $_POST["createUserName"];
     $email = $_POST["createUserEmail"];
     $login = $_POST["createUserLogin"];
     $password = $_POST["createUserPassword"];
-
+    // and attempt user creation
     $createUser = $userManager->register($login, $password, $name, $email);
     if (!$createUser) {
         $_SESSION["errorMessage"] = "Error creating user!";
@@ -36,27 +45,7 @@ if(isset($_POST["createUserName"],
 
 
 
-$id = 25;
-$login = "leerlandais";
-$pass = "passTest";
-
-$pass = $userManager->hashPassword($pass);
-
-$name = "Lee Brennan";
-$mail = "lee@leerlandais.com";
-$permission = 1;
-$date = "2024-07-26 10:15:09";
-
-$test = new UserMapping([   "object_user_id" => $id,
-    "object_user_login" => $login,
-    "object_user_pass" => $pass,
-    "object_user_name" => $name,
-    "object_user_email" => $mail,
-    "object_user_permission" => $permission,
-    "object_user_created" => $date,
-]);
 
 $title = "HomePage";
 include PROJECT_DIRECTORY."/view/public/public.home.view.php";
 
-var_dump($test);

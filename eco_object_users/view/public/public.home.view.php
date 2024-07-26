@@ -78,6 +78,7 @@ var_dump($_SESSION);
 </form>
 
 </div>
+<a href="?logout"><button class="bg-[#4F46E5] w-auto p-2 rounded-md text-white font-bold cursor-pointer hover:bg-[#181196]">Logout</button></a>
 </div>
 </body>
 </html>
