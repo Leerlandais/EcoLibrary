@@ -1,6 +1,6 @@
 <?php
 
-namespace model\Traits;
+namespace model\Trait;
 
 
 Trait TraitLaundryRoom {
