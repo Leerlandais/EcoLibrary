@@ -1,4 +1,6 @@
 <?php
+
+// so very easy using PHPStorm
 namespace model\Mapping;
 
 use model\Abstract\AbstractMapping;

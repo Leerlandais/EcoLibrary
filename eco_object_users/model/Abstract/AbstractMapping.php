@@ -1,37 +1,31 @@
 <?php
 
-// Another of Mika's wonderfully reusable
+// Another of Mika's wonderfully reusable chunks of code
 
-// Espace de nom (isolation du code)
+// set the namespace so that it can be found :)
 namespace model\Abstract;
 
-// Classe abstraite qui ne peut être instanciée.
-// Elle est la base de tous les mappings de tables
+// Abstract classes can't be instanced but can be extended
 abstract class AbstractMapping
 {
-    // constructeur - Appelé lors de l'instanciation
     public function __construct(array $tab)
     {
-        // tentative d'hydration des données des classes enfants
+        // hydration of child classes
         $this->hydrate($tab);
     }
 
-    // création de notre hydratation, en partant d'un tableau associatif et de ses clefs,
-    // on va régénérer le nom des setters existants dans les classes enfants
     protected function hydrate(array $assoc): void
     {
-        // tant qu'on a des éléments dans le tableau
         foreach ($assoc as $key => $value) {
+            // create the setter names by...
+            $tab = explode("_", $key); // cutting the name wherever _ is found and add to an array
+            $majuscule = array_map('ucfirst',$tab); // make each first letter uppercase
+            $newNameCamelCase = implode($majuscule); // re-attach the modified array elements
+            $methodeName = "set" . $newNameCamelCase; // and add 'set' to the start of the new string
 
-            // création du nom d'un setter (méthode publique de modification)
-            $tab = explode("_", $key);
-            $majuscule = array_map('ucfirst',$tab);
-            $newNameCamelCase = implode($majuscule);
-            $methodeName = "set" . $newNameCamelCase;
-
-            // si la méthode existe
+            // now check if the method exists
             if (method_exists($this, $methodeName)) {
-                // on hydrate le paramètre avec la valeur
+                // hydation of located parameter with value
                 $this->$methodeName($value);
             }
         }

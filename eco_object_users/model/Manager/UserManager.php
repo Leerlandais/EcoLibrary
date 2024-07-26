@@ -18,6 +18,8 @@ class UserManager {
         $this->db = $db;
     }
 
+
+// VERIFY IF USER ALREADY EXISTS
     public function testUserName($login) : bool {
         $sql = $this->db->prepare("SELECT * FROM eco_object_users WHERE object_user_login = :login");
         $sql->bindValue(':login', $login);
@@ -28,6 +30,7 @@ class UserManager {
         return false;
     }
 
+// ATTEMPT USER CREATION
     public function register(string $login, string $password, string $name, string $email) : bool {
         $login    = $this->standardClean($login);
         $password = $this->hashPassword($password, PASSWORD_DEFAULT);
@@ -45,6 +48,8 @@ class UserManager {
         return false;
     }
 
+
+// ATTEMPT USER LOGIN
     public function login(string $login, string $password) : bool  {
         $login = $this->standardClean($login);
         // $password = password_hash($password, PASSWORD_DEFAULT); // I ALWAYS FORGET THAT IT IS NOT NECESSARY TO PRE-HASH THE PASSWORD
@@ -64,6 +69,8 @@ class UserManager {
         return false;
     }
 
+
+// CAN'T HAVE A LOGIN WITHOUT A LOGOUT
     public function logout() : bool {
         // Mika's logout function is so good, it doesn't even need changing for OO-PHP usage ;)
         $_SESSION = [];
