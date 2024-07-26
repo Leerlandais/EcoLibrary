@@ -1,8 +1,8 @@
 <?php
-
-$route = $_GET("route") ?? "home";
+$route = $_GET['route'] ?? 'home';
+/*
 var_dump($route);
-
+*/
 // set up controller calls here
 /*
  * switch $route
