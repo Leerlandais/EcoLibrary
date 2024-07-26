@@ -1,4 +1,6 @@
 <?php
+
+use model\Mapping\UserMapping;
 $route = $_GET['route'] ?? 'home';
 /*
 var_dump($route);
@@ -11,4 +13,7 @@ var_dump($route);
  * case : etc
  */
 
-var_dump($db);
+$id = 2;
+$test = new UserMapping(["object_user_id" => $id]);
+
+var_dump($test);

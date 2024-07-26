@@ -5,12 +5,13 @@ use model\Abstract\AbstractMapping;
 use model\Trait\TraitTestInt;
 use model\Trait\TraitTestString;
 use model\Trait\TraitDateTime;
+use model\Traits\TraitLaundryRoom;
 use DateTime;
+use Exception;
+
 class UserMapping extends AbstractMapping {
 
-use TraitTestString;
-use TraitTestInt;
-use TraitDateTime;
+use TraitTestString, TraitTestInt, TraitDateTime, TraitLaundryRoom;
 
 protected ?int $object_user_id;
 protected ?string $object_user_login;
@@ -26,7 +27,8 @@ protected ?int $object_user_permission;
 
     public function setObjectUserId(?int $object_user_id): void
     {
-        
+        $object_user_id = $this->verifyInt($object_user_id);
+        if(is_string($object_user_id)) throw new Exception("User id must be a positive integer");
         $this->object_user_id = $object_user_id;
     }
 
@@ -37,6 +39,7 @@ protected ?int $object_user_permission;
 
     public function setObjectUserLogin(?string $object_user_login): void
     {
+        $object_user_login = $this->verifyString($object_user_login);
         $this->object_user_login = $object_user_login;
     }
 
