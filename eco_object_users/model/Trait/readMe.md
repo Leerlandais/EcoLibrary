@@ -1,1 +1,0 @@
-# TRAITS HERE - DUH

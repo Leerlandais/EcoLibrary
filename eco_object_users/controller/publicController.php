@@ -43,7 +43,17 @@ if(isset($_POST["createUserName"],
     }
 }
 
-
+// ATTEMPT USER LOGIN
+if(isset($_POST["loginUserLogin"],
+         $_POST["loginUserPassword"])) {
+    $name = $_POST["loginUserLogin"];
+    $password = $_POST["loginUserPassword"];
+    $attemptLogin = $userManager->login($name, $password);
+    if (!$attemptLogin) {
+        $_SESSION["errorMessage"] = "Invalid login!";
+    }
+    header("location: /");
+}
 
 
 $title = "HomePage";

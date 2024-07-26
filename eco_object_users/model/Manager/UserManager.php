@@ -65,6 +65,7 @@ class UserManager {
     }
 
     public function logout() : bool {
+        // Mika's logout function is so good, it doesn't even need changing for OO-PHP usage ;)
         $_SESSION = [];
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
@@ -79,6 +80,7 @@ class UserManager {
         exit();
     }
 
+    // little test to see if I could correctly call a private function: I can
     private function hashPassword(string $password): string {
         return password_hash($password, PASSWORD_DEFAULT);
     }
