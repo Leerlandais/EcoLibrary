@@ -11,3 +11,4 @@ var_dump($route);
  * case : etc
  */
 
+var_dump($db);
