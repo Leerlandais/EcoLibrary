@@ -1,4 +1,11 @@
 <?php
+/*
+ // HANDY FOR USE DURING PRODUCTION
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
+
 session_start(); // always start with the session :)
 // my new way of handling error messages - this permits message to exist even after page reload
 if (isset($_SESSION["errorMessage"])) {
