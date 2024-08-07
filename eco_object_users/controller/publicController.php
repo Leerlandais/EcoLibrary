@@ -52,6 +52,7 @@ if(isset($_POST["loginUserLogin"],
     if (!$attemptLogin) {
         $_SESSION["errorMessage"] = "Invalid login!";
     }
+
     header("location: /");
 }
 
