@@ -51,6 +51,8 @@ if(isset($_POST["loginUserLogin"],
     $attemptLogin = $userManager->login($name, $password);
     if (!$attemptLogin) {
         $_SESSION["errorMessage"] = "Invalid login!";
+    }else {
+        $_SESSION["errorMessage"] = "Logged in successfully!";
     }
 
     header("location: /");

@@ -63,6 +63,9 @@ class UserManager {
                 unset($_SESSION['object_user_pass']);
                 $_SESSION["id"] = session_id();
                 return true;
+            }else {
+                $stmt = $this->db->prepare("UPDATE `eco_object_users` SET `object_pass_fail` = `object_pass_fail` + 1 WHERE `object_user_login` = :login");
+                $stmt->execute([':login' => $login]);
             }
         }
         $_SESSION["errorMessage"] = "error while logging in";
